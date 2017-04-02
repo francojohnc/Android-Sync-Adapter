@@ -1,7 +1,4 @@
 
-/*
- *	Created by Rhys April 13, 2015
- */
 package com.apkmarvel.androidsyncadapter.database.engine;
 
 import android.content.ContentValues;
@@ -18,7 +15,7 @@ import java.util.Map.Entry;
 public abstract class Table {
     public final String TAG = getClass().getSimpleName();
     private SQLiteDatabase db;
-
+    private static String[] colums;
     //table structure
     public abstract String getTableStructure();
 
@@ -97,9 +94,9 @@ public abstract class Table {
     }
 
     public ArrayList<HashMap<String, String>> cursorToListMap(Cursor cursor) {
-        ArrayList<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
+        ArrayList<HashMap<String, String>> list = new ArrayList<>();
         for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
-            HashMap<String, String> map = new HashMap<String, String>();
+            HashMap<String, String> map = new HashMap<>();
             for (int i = 0; i < cursor.getColumnCount(); i++) {
                 map.put(cursor.getColumnName(i), cursor.getString(i));
             }
@@ -115,7 +112,16 @@ public abstract class Table {
         }
         return cv;
     }
-
+    public String[] getColums(){
+        if(colums==null){
+            colums = select().getColumnNames();
+        }
+        return colums;
+    }
+    public void cursorToObject(Cursor cursor,Object object) throws NoSuchFieldException, IllegalAccessException {
+        QueryBuilder queryBuilder = new QueryBuilder();
+        queryBuilder.cursorToObject(cursor,object);
+    }
     public boolean isExist() throws SQLException {
         try {
             if (select().getCount() > 0) {

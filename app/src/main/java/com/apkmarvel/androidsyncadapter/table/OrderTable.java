@@ -10,7 +10,7 @@ import com.apkmarvel.androidsyncadapter.model.Order;
  */
 
 public class OrderTable extends Table {
-    static final String TABLE_NAME = "tbl_order";
+    public static final String TABLE_NAME = "tbl_order";
     public static final String ID = "id";
     public static final String PRICE = "price";
     public static final String NAME = "name";

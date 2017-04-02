@@ -14,6 +14,11 @@ import android.view.View;
 
 import com.apkmarvel.androidsyncadapter.sync.SyncProvider;
 import com.apkmarvel.androidsyncadapter.sync.SyncUtils;
+import com.apkmarvel.androidsyncadapter.table.OrderTable;
+import com.apkmarvel.androidsyncadapter.table.UserTable;
+
+import static com.apkmarvel.androidsyncadapter.sync.SyncProvider.CONTENT_URL_ORDER;
+import static com.apkmarvel.androidsyncadapter.sync.SyncProvider.CONTENT_URL_USER;
 
 /*http://blog.udinic.com/2013/07/24/write-your-own-android-sync-adapter/*/
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -75,17 +80,41 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         Log.e(TAG,"onCreateLoader");
-        return new CursorLoader(this,FeedContract.Entry.CONTENT_URI,PROJECTION,null,null, FeedContract.Entry.COLUMN_NAME_PUBLISHED + " desc");
+        switch (id) {
+            case SyncProvider.URI_CODE_USER:
+                UserTable userTable = new UserTable();
+                return new CursorLoader(this, CONTENT_URL_USER, userTable.getColums(), null, null, null);
+            case SyncProvider.URI_CODE_ORDER:
+                OrderTable orderTable = new OrderTable();
+                return new CursorLoader(this, CONTENT_URL_ORDER, orderTable.getColums(), null, null, null);
+            default:
+                return null;
+        }
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        Log.e(TAG,"onLoadFinished");
-        if(data==null)return;
-        while (data.moveToNext()) {
+        Log.e(TAG, "onLoadFinished " + loader.getId());
+        String listData = "";
+        switch (loader.getId()) {
+            case SyncProvider.URI_CODE_USER:
 
-            Log.e(TAG,"moveToNext" +   data.toString());
+                while (data.moveToNext()) {
+                    String id = data.getString(data.getColumnIndex("id"));
+                    String name = data.getString(data.getColumnIndex("firstname"));
+                    String lastname = data.getString(data.getColumnIndex("lastname"));
+                    listData = listData + id + " : " + name + " "+lastname+"\n";
+                }
+                break;
+            case SyncProvider.URI_CODE_ORDER:
+                while (data.moveToNext()) {
+                    String id = data.getString(data.getColumnIndex("id"));
+                    String name = data.getString(data.getColumnIndex("name"));
+                    listData = listData + id + " : " + name + "\n";
+                }
+                break;
         }
+        Log.e(TAG, "listData " + listData);
     }
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
