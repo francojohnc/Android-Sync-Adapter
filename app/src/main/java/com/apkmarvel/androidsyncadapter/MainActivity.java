@@ -66,8 +66,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                         setRefreshActionButtonState(false);
                         return;
                     }
-                    boolean syncActive = ContentResolver.isSyncActive(account, FeedContract.CONTENT_AUTHORITY);
-                    boolean syncPending = ContentResolver.isSyncPending(account, FeedContract.CONTENT_AUTHORITY);
+                    boolean syncActive = ContentResolver.isSyncActive(account,  SyncProvider.PROVIDER_NAME);
+                    boolean syncPending = ContentResolver.isSyncPending(account,  SyncProvider.PROVIDER_NAME);
                     setRefreshActionButtonState(syncActive || syncPending);
                 }
             });

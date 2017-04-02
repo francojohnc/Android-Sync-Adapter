@@ -25,13 +25,9 @@
         </activity>
         <provider
             android:name=".sync.SyncProvider"
-            android:authorities="com.apkmarvel.androidsyncadapter"
+            android:authorities="@string/package_name"
             android:exported="false" >
         </provider>
-        <!--<provider-->
-            <!--android:name=".FeedProvider"-->
-            <!--android:authorities="com.apkmarvel.androidsyncadapter"-->
-            <!--android:exported="false" />-->
 
         <service android:name=".sync.SyncService"
             android:exported="true">
