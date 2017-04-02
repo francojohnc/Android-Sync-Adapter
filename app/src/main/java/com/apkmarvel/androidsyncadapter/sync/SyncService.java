@@ -1,5 +1,5 @@
 
-package com.apkmarvel.androidsyncadapter;
+package com.apkmarvel.androidsyncadapter.sync;
 
 import android.app.Service;
 import android.content.Intent;

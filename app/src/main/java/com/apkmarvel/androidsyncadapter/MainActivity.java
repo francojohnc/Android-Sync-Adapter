@@ -12,16 +12,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 
+import com.apkmarvel.androidsyncadapter.sync.SyncProvider;
+import com.apkmarvel.androidsyncadapter.sync.SyncUtils;
+
 /*http://blog.udinic.com/2013/07/24/write-your-own-android-sync-adapter/*/
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     public final String TAG = this.getClass().getSimpleName();
     private Object mSyncObserverHandle;
-    private static final String[] PROJECTION = new String[]{
-            FeedContract.Entry._ID,
-            FeedContract.Entry.COLUMN_NAME_TITLE,
-            FeedContract.Entry.COLUMN_NAME_LINK,
-            FeedContract.Entry.COLUMN_NAME_PUBLISHED
-    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,7 +26,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         /*create account*/
         SyncUtils.CreateSyncAccount(this);
         /*register load callback*/
-        getSupportLoaderManager().initLoader(0, null, this);
+        getSupportLoaderManager().initLoader(SyncProvider.URI_CODE_USER, null, this);
+        getSupportLoaderManager().initLoader(SyncProvider.URI_CODE_ORDER, null, this);
     }
     public void sync(View v){
         SyncUtils.TriggerRefresh();
@@ -37,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public void onResume() {
         super.onResume();
-        mSyncStatusObserver.onStatusChanged(0);
+        mSyncStatusObserver.onStatusChanged(SyncProvider.URI_CODE_USER);
         final int mask = ContentResolver.SYNC_OBSERVER_TYPE_PENDING | ContentResolver.SYNC_OBSERVER_TYPE_ACTIVE;
         mSyncObserverHandle = ContentResolver.addStatusChangeListener(mask, mSyncStatusObserver);
     }
@@ -85,7 +83,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         Log.e(TAG,"onLoadFinished");
         if(data==null)return;
         while (data.moveToNext()) {
-            Log.e(TAG,"moveToNext");
+
+            Log.e(TAG,"moveToNext" +   data.toString());
         }
     }
     @Override

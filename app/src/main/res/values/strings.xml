@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">Android SyncAdapter</string>
+    <string name="package_name">com.apkmarvel.androidsyncadapter</string>
+    <string name="account_type">com.apkmarvel.androidsyncadapter.account</string>
+
 </resources>

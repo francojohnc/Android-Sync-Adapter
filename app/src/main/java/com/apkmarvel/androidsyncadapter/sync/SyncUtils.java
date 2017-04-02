@@ -1,5 +1,5 @@
 
-package com.apkmarvel.androidsyncadapter;
+package com.apkmarvel.androidsyncadapter.sync;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
@@ -7,6 +7,9 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+
+import com.apkmarvel.androidsyncadapter.FeedContract;
+import com.apkmarvel.androidsyncadapter.GenericAccountService;
 
 
 public class SyncUtils {
